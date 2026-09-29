@@ -1,18 +1,21 @@
 import { cacheLife } from "next/cache";
 import { Movie } from "./types";
 
-export const fetchMovies = async () => {
+export const fetchMovies = async ({ pageNumber }: { pageNumber: number }) => {
   "use cache";
   cacheLife("hours");
 
   let res;
   try {
-    res = await fetch(`https://api.themoviedb.org/3/movie/popular`, {
-      headers: {
-        accept: "application/json",
-        Authorization: `Bearer ${process.env.TMDB_TOKEN}`,
+    res = await fetch(
+      `https://api.themoviedb.org/3/movie/popular?page=${pageNumber}`,
+      {
+        headers: {
+          accept: "application/json",
+          Authorization: `Bearer ${process.env.TMDB_TOKEN}`,
+        },
       },
-    });
+    );
   } catch (error) {
     console.error("Error fetching movies:", error);
     throw new Error("Couldn't reach the movie database. Try again later.");
