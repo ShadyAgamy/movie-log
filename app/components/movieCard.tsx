@@ -2,6 +2,7 @@ import { getYear } from "@/lib/format";
 import { Movie } from "@/lib/types";
 import Image from "next/image";
 import Link from "next/link";
+import Rating from "./rating";
 
 const MovieCard = ({
   movie,
@@ -30,6 +31,12 @@ const MovieCard = ({
             {movie.title}
           </div>
         )}
+        <Rating
+          average={movie.vote_average}
+          count={movie.vote_count}
+          variant="badge"
+          className="absolute top-2 left-2"
+        />
       </div>
       <div className="px-0.5">
         <h3 className="line-clamp-1 text-sm font-semibold group-hover:underline group-hover:underline-offset-4">

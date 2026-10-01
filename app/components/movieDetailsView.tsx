@@ -1,13 +1,12 @@
 import {
-  formatCount,
   formatDate,
   formatLanguage,
-  formatRating,
   formatRuntime,
   getYear,
 } from "@/lib/format";
 import { MovieDetails } from "@/lib/types";
 import Image from "next/image";
+import Rating from "./rating";
 
 const IMG = "https://image.tmdb.org/t/p";
 
@@ -65,19 +64,7 @@ const MovieDetailsView = ({ movie }: { movie: MovieDetails }) => {
           )}
 
           <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm">
-            {movie.vote_count > 0 && (
-              <span className="flex items-center gap-1.5">
-                <span aria-hidden className="text-amber-400">
-                  ★
-                </span>
-                <span className="font-semibold">
-                  {formatRating(movie.vote_average)}
-                </span>
-                <span className="text-neutral-500">
-                  / 10 · {formatCount(movie.vote_count)} votes
-                </span>
-              </span>
-            )}
+            <Rating average={movie.vote_average} count={movie.vote_count} />
             {runtime && <span className="text-neutral-500">{runtime}</span>}
           </div>
 
