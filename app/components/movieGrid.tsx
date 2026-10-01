@@ -16,8 +16,14 @@ const MovieGrid = ({ movies }: { movies: Movie[] }) => {
         if (!result.ok) {
           throw new Error(`${result.status} Failed to load page ${page}`);
         }
-        const data = await result.json();
-        setMovieList((prev) => [...prev, ...data.movies]);
+        const data: { movies: Movie[] } = await result.json();
+        setMovieList((prev) => {
+          const existingMovieIds = new Set(prev.map((movie) => movie.id));
+          return [
+            ...prev,
+            ...data.movies.filter((movie) => !existingMovieIds.has(movie.id)),
+          ];
+        });
         setPage(page + 1);
       } catch (error) {
         console.error("Error ", error);
@@ -48,7 +54,7 @@ const MovieGrid = ({ movies }: { movies: Movie[] }) => {
       <ul className="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6">
         {movieList.map((movie: Movie, i) => (
           <li key={movie.id}>
-            <MovieCard movie={movie} eager={i < 6} />
+            <MovieCard movie={movie} eager={i < 12} />
           </li>
         ))}
       </ul>
