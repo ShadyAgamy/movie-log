@@ -1,6 +1,7 @@
 "use client";
 import { Movie } from "@/lib/types";
 import MovieCard from "./movieCard";
+import { MovieCardSkeleton } from "./movieGridSkeleton";
 import { useEffect, useRef, useState, useTransition } from "react";
 
 const MovieGrid = ({ movies }: { movies: Movie[] }) => {
@@ -49,6 +50,7 @@ const MovieGrid = ({ movies }: { movies: Movie[] }) => {
       observer.disconnect();
     };
   }, [page, isPending]);
+
   return (
     <>
       <ul className="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6">
@@ -57,19 +59,19 @@ const MovieGrid = ({ movies }: { movies: Movie[] }) => {
             <MovieCard movie={movie} eager={i < 12} />
           </li>
         ))}
+        {isPending &&
+          Array.from({ length: 12 }, (_, i) => (
+            <li key={`skeleton-${i}`} aria-hidden="true">
+              <MovieCardSkeleton />
+            </li>
+          ))}
       </ul>
 
-      <div ref={loaderRef} className="flex h-24 items-center justify-center">
-        {isPending && (
-          <div
-            role="status"
-            className="flex items-center gap-3 text-sm text-neutral-500"
-          >
-            <span className="size-5 animate-spin rounded-full border-2 border-neutral-300 border-t-neutral-800 dark:border-neutral-700 dark:border-t-neutral-200" />
-            Loading more movies…
-          </div>
-        )}
-      </div>
+      <p role="status" className="sr-only">
+        {isPending ? "Loading more movies…" : ""}
+      </p>
+
+      <div ref={loaderRef} className="h-24" />
     </>
   );
 };
