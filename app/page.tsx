@@ -1,12 +1,8 @@
-import { fetchMovies } from "@/lib/dal";
-import MovieGrid from "./components/movieGrid";
+import { Suspense } from "react";
+import MovieGridSkeleton from "./components/movieGridSkeleton";
+import PopularMovies from "./components/popularMovies";
 
-const Home = async () => {
-  const pageNumber = 1;
-  const movies = await fetchMovies({
-    pageNumber,
-  });
-
+const Home = () => {
   return (
     <main className="mx-auto w-full max-w-7xl px-4 py-10 sm:px-6">
       <header className="mb-8">
@@ -17,7 +13,9 @@ const Home = async () => {
           What everyone&apos;s watching this week. Pick one to see the details.
         </p>
       </header>
-      <MovieGrid movies={movies} />
+      <Suspense fallback={<MovieGridSkeleton />}>
+        <PopularMovies />
+      </Suspense>
     </main>
   );
 };
