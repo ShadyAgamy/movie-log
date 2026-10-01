@@ -1,6 +1,6 @@
 "use client";
 import { Movie } from "@/lib/types";
-import Image from "next/image";
+import MovieCard from "./movieCard";
 import { useEffect, useRef, useState, useTransition } from "react";
 
 const MovieGrid = ({ movies }: { movies: Movie[] }) => {
@@ -45,24 +45,25 @@ const MovieGrid = ({ movies }: { movies: Movie[] }) => {
   }, [page, isPending]);
   return (
     <>
-      <div className="flex flex-wrap justify-center gap-4">
+      <ul className="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6">
         {movieList.map((movie: Movie, i) => (
-          <div key={movie.id} className="w-64">
-            <Image
-              src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-              alt={movie.title}
-              width={500}
-              height={750}
-              className="rounded-lg"
-              loading={i < 14 ? "eager" : "lazy"}
-            />
-            <h2 className="text-lg font-semibold mt-2">{movie.title}</h2>
-            <p className="text-gray-600">{movie.release_date}</p>
-          </div>
+          <li key={movie.id}>
+            <MovieCard movie={movie} eager={i < 6} />
+          </li>
         ))}
-      </div>
+      </ul>
 
-      <div ref={loaderRef}>{isPending && <div>Loading...</div>}</div>
+      <div ref={loaderRef} className="flex h-24 items-center justify-center">
+        {isPending && (
+          <div
+            role="status"
+            className="flex items-center gap-3 text-sm text-neutral-500"
+          >
+            <span className="size-5 animate-spin rounded-full border-2 border-neutral-300 border-t-neutral-800 dark:border-neutral-700 dark:border-t-neutral-200" />
+            Loading more movies…
+          </div>
+        )}
+      </div>
     </>
   );
 };
