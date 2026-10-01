@@ -4,6 +4,8 @@ export interface Movie {
   release_date: string;
   poster_path?: string;
   overview: string;
+  vote_average: number;
+  vote_count: number;
 }
 
 type MovieGenre = {
@@ -23,7 +25,5 @@ export interface MovieDetails extends Movie {
     name: string;
   }[];
   status: string;
-  vote_average: number;
   tagline: string;
-  vote_count: number;
 }
