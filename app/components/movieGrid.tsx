@@ -9,6 +9,7 @@ const MovieGrid = ({ movies }: { movies: Movie[] }) => {
   const [isPending, startTransition] = useTransition();
   const [page, setPage] = useState(2);
   const loaderRef = useRef(null);
+  const [isError, setIsError] = useState(false);
 
   const handleLoadMoreMovies = (page: number) => {
     startTransition(async () => {
@@ -26,8 +27,10 @@ const MovieGrid = ({ movies }: { movies: Movie[] }) => {
           ];
         });
         setPage(page + 1);
+        setIsError(false);
       } catch (error) {
         console.error("Error ", error);
+        setIsError(true);
       }
     });
   };
@@ -35,7 +38,7 @@ const MovieGrid = ({ movies }: { movies: Movie[] }) => {
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting && !isPending && page < 501) {
+        if (entry.isIntersecting && !isPending && page < 501 && !isError) {
           handleLoadMoreMovies(page);
         }
       },
@@ -49,7 +52,7 @@ const MovieGrid = ({ movies }: { movies: Movie[] }) => {
     return () => {
       observer.disconnect();
     };
-  }, [page, isPending]);
+  }, [page, isPending, isError]);
 
   return (
     <>
@@ -70,6 +73,11 @@ const MovieGrid = ({ movies }: { movies: Movie[] }) => {
       <p role="status" className="sr-only">
         {isPending ? "Loading more movies…" : ""}
       </p>
+      {isError && (
+        <button onClick={() => setIsError(false)}>
+          Retry Loading movies...
+        </button>
+      )}
 
       <div ref={loaderRef} className="h-24" />
     </>
