@@ -74,9 +74,18 @@ const MovieGrid = ({ movies }: { movies: Movie[] }) => {
         {isPending ? "Loading more movies…" : ""}
       </p>
       {isError && (
-        <button onClick={() => setIsError(false)}>
-          Retry Loading movies...
-        </button>
+        <div className="mt-10 flex flex-col items-center gap-3 text-center">
+          <p className="text-sm text-neutral-500 dark:text-neutral-400">
+            Couldn&apos;t load more movies.
+          </p>
+          <button
+            type="button"
+            onClick={() => setIsError(false)}
+            className="rounded-lg bg-neutral-800 px-5 py-2 font-medium text-white transition-colors hover:bg-neutral-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-500"
+          >
+            Try again
+          </button>
+        </div>
       )}
 
       <div ref={loaderRef} className="h-24" />
