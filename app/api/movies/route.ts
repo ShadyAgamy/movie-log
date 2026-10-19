@@ -1,4 +1,5 @@
 import { fetchMovies } from "@/lib/dal";
+
 import { NextResponse } from "next/server";
 
 export const GET = async (request: Request) => {
@@ -10,9 +11,16 @@ export const GET = async (request: Request) => {
       { status: 400 },
     );
   }
-  const res = await fetchMovies({ pageNumber });
 
-  return NextResponse.json({
-    movies: res,
-  });
+  try {
+    const res = await fetchMovies({ pageNumber });
+    return NextResponse.json({
+      movies: res,
+    });
+  } catch {
+    return NextResponse.json(
+      { message: "something went wrong" },
+      { status: 502 },
+    );
+  }
 };

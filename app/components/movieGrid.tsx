@@ -9,6 +9,7 @@ const MovieGrid = ({ movies }: { movies: Movie[] }) => {
   const [isPending, startTransition] = useTransition();
   const [page, setPage] = useState(2);
   const loaderRef = useRef(null);
+  const [isError, setIsError] = useState(false);
 
   const handleLoadMoreMovies = (page: number) => {
     startTransition(async () => {
@@ -26,8 +27,10 @@ const MovieGrid = ({ movies }: { movies: Movie[] }) => {
           ];
         });
         setPage(page + 1);
+        setIsError(false);
       } catch (error) {
         console.error("Error ", error);
+        setIsError(true);
       }
     });
   };
@@ -35,7 +38,7 @@ const MovieGrid = ({ movies }: { movies: Movie[] }) => {
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting && !isPending && page < 501) {
+        if (entry.isIntersecting && !isPending && page < 501 && !isError) {
           handleLoadMoreMovies(page);
         }
       },
@@ -49,7 +52,7 @@ const MovieGrid = ({ movies }: { movies: Movie[] }) => {
     return () => {
       observer.disconnect();
     };
-  }, [page, isPending]);
+  }, [page, isPending, isError]);
 
   return (
     <>
@@ -70,6 +73,20 @@ const MovieGrid = ({ movies }: { movies: Movie[] }) => {
       <p role="status" className="sr-only">
         {isPending ? "Loading more movies…" : ""}
       </p>
+      {isError && (
+        <div className="mt-10 flex flex-col items-center gap-3 text-center">
+          <p className="text-sm text-neutral-500 dark:text-neutral-400">
+            Couldn&apos;t load more movies.
+          </p>
+          <button
+            type="button"
+            onClick={() => setIsError(false)}
+            className="rounded-lg bg-neutral-800 px-5 py-2 font-medium text-white transition-colors hover:bg-neutral-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-500"
+          >
+            Try again
+          </button>
+        </div>
+      )}
 
       <div ref={loaderRef} className="h-24" />
     </>

@@ -20,11 +20,12 @@ export const fetchMovies = async ({ pageNumber }: { pageNumber: number }) => {
     console.error("Error fetching movies:", error);
     throw new Error("Couldn't reach the movie database. Try again later.");
   }
-  const data = await res.json();
+
   if (!res.ok) {
-    console.error("Error fetching movies:", data.status_message);
-    throw new Error(data.status_message);
+    console.error("Error fetching movies:", `${res.status} ${res.statusText}`);
+    throw new Error(`${res.status} something went wrong`);
   }
+  const data = await res.json();
   return data.results as Movie[];
 };
 
@@ -43,13 +44,14 @@ export const fetchSingleMovie = async ({ movieId }: { movieId: number }) => {
     console.error("Error fetching movie:", error);
     throw new Error("Couldn't reach the movie database. Try again later.");
   }
-  const data = await res.json();
-  if (res.status === 404) {
-    return null;
-  }
+
   if (!res.ok) {
-    console.error("Error fetching movie:", data.status_message);
-    throw new Error(data.status_message);
+    if (res.status === 404) {
+      return null;
+    }
+    console.error("Error fetching movie:", `${res.status} ${res.statusText}`);
+    throw new Error(`${res.status} something went wrong`);
   }
+  const data = await res.json();
   return data as MovieDetails;
 };
