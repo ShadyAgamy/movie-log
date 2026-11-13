@@ -25,7 +25,7 @@ A movie tracking app (like Letterboxd) where users log the movies they watch. Br
 - [Next.js](https://nextjs.org) 16 (App Router), React 19, TypeScript
 - Tailwind CSS 4
 - [TMDB API](https://developer.themoviedb.org) for movie data
-- Postgres on Neon + Drizzle ORM _(coming)_
+- Postgres on Neon + Drizzle ORM
 - Deployed on Vercel, with preview deploys for every PR
 
 ## How I built it
