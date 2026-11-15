@@ -10,6 +10,7 @@ import {
   index,
 } from "drizzle-orm/pg-core";
 import { sql } from "drizzle-orm";
+
 export const users = pgTable("users", {
   id: uuid().primaryKey().defaultRandom(),
   name: text(),
@@ -56,9 +57,24 @@ export const watched = pgTable(
   ],
 );
 
+export const sessions = pgTable(
+  "sessions",
+  {
+    id: uuid().primaryKey().defaultRandom(),
+    userId: uuid()
+      .references(() => users.id, { onDelete: "cascade" })
+      .notNull(),
+    expiresAt: timestamp().notNull(),
+    createdAt: timestamp().defaultNow().notNull(),
+  },
+  (table) => [index("sessions_user_idx").on(table.userId)],
+);
+
 export type User = typeof users.$inferSelect;
 export type NewUser = typeof users.$inferInsert;
 export type WatchlistMovie = typeof watchList.$inferSelect;
 export type NewWatchlistMovie = typeof watchList.$inferInsert;
 export type WatchedMovie = typeof watched.$inferSelect;
 export type NewWatchedMovie = typeof watched.$inferInsert;
+export type Session = typeof sessions.$inferSelect;
+export type NewSession = typeof sessions.$inferInsert;
