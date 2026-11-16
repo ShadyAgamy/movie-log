@@ -35,3 +35,9 @@ export type ActionResponse = {
   error?: string;
   inputs?: Record<string, string>;
 };
+
+export const userSignUpOrIninitialState: ActionResponse = {
+  success: false,
+  message: "",
+  errors: undefined,
+};
