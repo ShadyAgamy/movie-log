@@ -27,3 +27,17 @@ export interface MovieDetails extends Movie {
   status: string;
   tagline: string;
 }
+
+export type ActionResponse = {
+  success: boolean;
+  message: string;
+  errors?: Record<string, string[]>;
+  error?: string;
+  inputs?: Record<string, string>;
+};
+
+export const userSignUpOrIninitialState: ActionResponse = {
+  success: false,
+  message: "",
+  errors: undefined,
+};
