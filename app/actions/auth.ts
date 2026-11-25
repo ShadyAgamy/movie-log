@@ -1,6 +1,11 @@
 "use server";
 
-import { createSession, hashPassword, verifyPassword } from "@/lib/auth";
+import {
+  createSession,
+  deleteSession,
+  hashPassword,
+  verifyPassword,
+} from "@/lib/auth";
 import { ActionResponse } from "@/lib/types";
 import { signInSchema, signUpSchema } from "@/lib/validations";
 import { flattenError } from "zod";
@@ -99,4 +104,9 @@ export const signIn = async (
 
   await createSession(user.id);
   redirect("/");
+};
+
+export const signOut = async () => {
+  await deleteSession();
+  redirect("/sign-in");
 };

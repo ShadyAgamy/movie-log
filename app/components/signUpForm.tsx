@@ -55,7 +55,7 @@ const SignUpForm = () => {
       <button
         type="submit"
         disabled={isPending}
-        className="mt-1 h-10 rounded-lg bg-neutral-800 font-medium text-white transition-colors hover:bg-neutral-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-500 disabled:cursor-not-allowed disabled:opacity-60"
+        className="mt-1 h-10 cursor-pointer rounded-lg bg-neutral-800 font-medium text-white transition-colors hover:bg-neutral-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-500 disabled:cursor-not-allowed disabled:opacity-60"
       >
         {isPending ? "Creating account…" : "Create account"}
       </button>

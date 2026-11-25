@@ -1,4 +1,6 @@
 import Link from "next/link";
+import { Suspense } from "react";
+import UserMenu, { UserMenuSkeleton } from "./userMenu";
 
 const SiteHeader = () => {
   return (
@@ -13,6 +15,11 @@ const SiteHeader = () => {
           </span>
           Movie Log
         </Link>
+        <div className="ml-auto">
+          <Suspense fallback={<UserMenuSkeleton />}>
+            <UserMenu />
+          </Suspense>
+        </div>
       </div>
     </header>
   );
